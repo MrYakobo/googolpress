@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="200" height="100">
+    <!-- Google-inspired colors -->
+    <!-- Blue Book -->
+    <rect x="10" y="30" width="30" height="40" fill="#4285F4" rx="3" />
+    <!-- Red Book -->
+    <rect x="45" y="25" width="30" height="40" fill="#EA4335" rx="3" />
+    <!-- Yellow Book -->
+    <rect x="80" y="35" width="30" height="40" fill="#FBBC05" rx="3" />
+    <!-- Green Book -->
+    <rect x="115" y="30" width="30" height="40" fill="#34A853" rx="3" />
+
+    <!-- Text -->
+    <text x="20" y="100" font-family="Arial, sans-serif" font-size="18" fill="#000">
+        GooglePress
+    </text>
+</svg>

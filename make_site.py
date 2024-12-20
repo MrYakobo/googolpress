@@ -1,147 +1,105 @@
 #!/usr/bin/env python3
 import argparse
-import tempfile
-from bs4 import BeautifulSoup, Tag
+from datetime import datetime
+from glob import glob
 import os
+from pathlib import Path
+import re
 import subprocess
+from jinja2 import Template
+from bs4 import BeautifulSoup
+from jinja2 import Template
 
 
-def get_url(url, outfile):
-    subprocess.run(["curl", "-L", url, "-o", outfile], check=True)
+def get_url(url):
+    directory = "temp"
+    subprocess.run(["rm", "-rf", directory], check=True)
+    subprocess.run(["mkdir", directory], check=True)
+    subprocess.run(["curl", "-LOJ", url], cwd=directory, check=True)
+
+    return glob(f"{directory}/*.zip")[0]
 
 
-# Generate sidebar
-def make_sidebar(soup):
-    # Find all elements with class 'title'
-    titles = soup.select(".title")
+def render_template(soup, url_or_local_file, zip_filename):
+    if "https://" not in url_or_local_file:
+        url_or_local_file = os.path.abspath(url_or_local_file)
 
-    # Create the sidebar HTML as a string
-    sidebar = soup.new_tag(
-        "nav",
-        **{
-            "id": "hamburgerMenu",
-            "class": "fixed top-0 left-0 w-2/3 md:w-auto h-full bg-gray-800 text-white shadow-lg transform -translate-x-full transition-transform duration-300 md:static md:translate-x-0 font-inter overflow-y-scroll left-0 top-0 bg-white py-3 px-4 shadow-lg rounded-lg h-full z-20 flex-shrink-0",
-        },
-    )
-    ul = soup.new_tag("ul")
+    data = {
+        "titles": soup.select(".title"),
+        "old_head": soup.find("head").encode_contents().decode('utf8'),
+        "old_body_classes": soup.body.get("class", ""),
+        "old_body": str(soup.body.decode_contents()),
+        "generated_date": datetime.now().isoformat(sep=" ", timespec="minutes"),
+        "original_document": url_or_local_file,
+        "document_title": Path(zip_filename).stem
+    }
 
-    for title in titles:
-        li = soup.new_tag("li")
-        a = soup.new_tag(
-            "a",
-            href=f"#{title.get('id')}",
-            **{"class": "md:text-lg hover:bg-blue-200 py-1 px-4 rounded w-full block"},
-        )
-        a.string = title.get_text(strip=True)
-        li.append(a)
-        ul.append(li)
+    with open("templates/main.j2.html") as f:
+        template = Template(f.read())
 
-    sidebar.append(ul)
+    html = template.render(**data)
 
-    # Wrap tables in a scrollable div.
+    return html
+
+
+def fix_tables(soup):
     tables = soup.find_all("table")
+    template = Template(open("templates/tables.j2.html").read())
+
     for table in tables:
-        wrapper = soup.new_tag(
-            "div", **{"class": "border border-black/50 overflow-x-auto max-w-full"}
-        )
-        # make sure tables won't linebreak
-        table["class"].append("whitespace-nowrap")
-        table.replace_with(wrapper)
-        wrapper.append(table)
+        wrapper = template.render(table_html=table.encode_contents().decode('utf8'), table_classes=table.get("class", ""))
+        table.replace_with(BeautifulSoup(wrapper, "html.parser"))
 
-    # Restructure body content
-    old_body_classes = soup.body.get("class", "")
-    old_body_content = str(soup.body.decode_contents())
+def make_tailwindcss():
+    subprocess.run(["tailwindcss", "-i", "templates/input.css", "-o", "site/style.css"], check=True)
 
-    # Add sidebar and restructure body
-    soup.body.clear()
-    soup.body["class"] = "flex bg-black md:bg-gray-800"
-    soup.body.append(sidebar)
+def massage_url(url):
+    # https://docs.google.com/document/d/1GP3hX7KoZTutrrdv9h02oUTdJS-bPJwsG6Gl3_7M3lA/edit?usp=drive_link
+    # =>
+    # https://docs.google.com/document/u/0/export?format=html&id=$ID&includes_info_params=true&usp=sharing&cros_files=false
 
-    new_content_div = soup.new_tag(
-        "div",
-        **{
-            "class": f"{' '.join(old_body_classes)} max-w-screen-lg overflow-x-hidden transition-opacity px-6 pt-16",
-            "id": "mainContent",
-        },
-    )
-    new_content_div.append(BeautifulSoup(old_body_content, "html.parser"))
-    soup.body.append(new_content_div)
+    pattern = r"(?<=/d/)([a-zA-Z0-9-_]+)"
+    document_id = re.search(pattern, url).group(1)
 
+    export_link = f"https://docs.google.com/document/u/0/export?format=zip&id={document_id}&includes_info_params=true&usp=sharing&cros_files=false"
+    return export_link
 
-def embed_css(soup, css_filename):
-    with open(css_filename) as f:
-        css = f.read()
+def main(url_or_local_file):
+    output_filename = "site/index.html"
 
-    style_tag = soup.new_tag("style", type="text/css")
-    style_tag.string = css
+    if os.path.exists(url_or_local_file):
+        zip_filename = url_or_local_file
+    else:
+        # try to fetch the url
+        if "export" not in url_or_local_file:
+            url_or_local_file = massage_url(url_or_local_file)
 
-    link_1 = soup.new_tag("link", rel="preconnect", href="https://fonts.googleapis.com")
-    link_2 = soup.new_tag(
-        "link", rel="preconnect", href="https://fonts.gstatic.com", crossorigin=True
-    )
-    link_3 = soup.new_tag(
-        "link",
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap",
-        rel="stylesheet",
-    )
+        zip_filename = get_url(url_or_local_file)
 
-    soup.head.append(link_1)
-    soup.head.append(link_2)
-    soup.head.append(link_3)
+    print(zip_filename)
+    subprocess.run(["rm", "-rf", "site"], check=True)
+    subprocess.run(["unzip", zip_filename, "-d", "site"], check=True)
+    subprocess.run(["cp", *glob("assets/*"), "site"], check=True)
 
-    hamburger_script = open("hamburger.js").read()
+    html_filename = glob("site/*.html")[0]
 
-    soup.head.append(
-        BeautifulSoup(f"<script>{hamburger_script}</script>", "html.parser")
-    )
+    with open(html_filename, "r", encoding="utf-8") as f:
+        input_html = f.read()
 
-    soup.body.append(
-        BeautifulSoup(
-            """
-      <button
-        id="hamburgerButton"
-        class="fixed top-4 left-4 z-10 px-3 py-2 bg-gray-800 text-white rounded-md md:hidden text-2xl leading-8">
-        ☰
-        </button>
-    """,
-            "html.parser",
-        )
-    )
-
-    meta_tag = soup.new_tag(
-        "meta",
-        attrs={"name": "viewport", "content": "width=device-width, initial-scale=1"},
-    )
-    soup.head.append(meta_tag)
-
-
-def main(url, output_filename):
-    with tempfile.TemporaryDirectory() as tmpdir:
-        html_filename = tmpdir + "/original.html"
-        get_url(url, html_filename)
-
-        with open(html_filename, "r", encoding="utf-8") as f:
-            input_html = f.read()
-
-    # with open("a.html", "r", encoding="utf-8") as f:
-    #     input_html = f.read()
+    make_tailwindcss()
 
     soup = BeautifulSoup(input_html, "html.parser")
-    make_sidebar(soup)
-
-    embed_css(soup, "style.css")
+    fix_tables(soup)
+    html = render_template(soup, url_or_local_file, zip_filename)
 
     with open(output_filename, "w", encoding="utf-8") as f:
-        f.write(soup.prettify())
+        f.write(html)
+
+    print("wrote to site!")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--output", default="out.html")
-    parser.add_argument("url")
+    parser.add_argument("url_or_zipfile")
     args = parser.parse_args()
-    main(
-        args.url,
-        args.output,
-    )
+    main(args.url_or_zipfile)

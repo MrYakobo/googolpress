@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<head>
+    {{ old_head|safe }}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="hamburger.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="">
+    <main class="bg-black md:bg-gray-800 h-screen flex flex-col md:flex-row">
+        <nav
+            id="hamburgerMenu"
+            class="fixed w-2/3 md:w-auto bg-white text-white transform -translate-x-full transition-transform duration-300 md:static md:translate-x-0 font-inter overflow-y-scroll left-0 top-0 shadow-lg h-full z-20 flex-shrink-0">
+            <ul class="flex justify-around mt-0 bg-gray-800 border border-black/30 px-2 py-3 mb-4 sticky top-0">
+                <li>
+                    <a class="text-white hover:text-blue-500" title="googlepress"
+                        href="https://github.com/MrYakobo/googlepress">
+                        <svg class="w-16" width="112" height="42" viewBox="0 0 112 42" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g clip-path="url(#clip0_42_106)">
+                                <path
+                                    d="M22.5 4H2.5C1.11929 4 0 5.11929 0 6.5V34.8333C0 36.214 1.11929 37.3333 2.5 37.3333H22.5C23.8807 37.3333 25 36.214 25 34.8333V6.5C25 5.11929 23.8807 4 22.5 4Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M51.6665 -0.166626H31.6665C30.2858 -0.166626 29.1665 0.952662 29.1665 2.33337V30.6667C29.1665 32.0474 30.2858 33.1667 31.6665 33.1667H51.6665C53.0472 33.1667 54.1665 32.0474 54.1665 30.6667V2.33337C54.1665 0.952662 53.0472 -0.166626 51.6665 -0.166626Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M80.8335 8.16663H60.8335C59.4528 8.16663 58.3335 9.28591 58.3335 10.6666V39C58.3335 40.3807 59.4528 41.5 60.8335 41.5H80.8335C82.2142 41.5 83.3335 40.3807 83.3335 39V10.6666C83.3335 9.28591 82.2142 8.16663 80.8335 8.16663Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M110 4H90C88.6193 4 87.5 5.11929 87.5 6.5V34.8333C87.5 36.214 88.6193 37.3333 90 37.3333H110C111.381 37.3333 112.5 36.214 112.5 34.8333V6.5C112.5 5.11929 111.381 4 110 4Z"
+                                    fill="currentColor" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_42_106">
+                                    <rect width="112" height="42" fill="currentColor" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </a>
+                </li>
+                <li class="w-[1px] bg-gray-100" aria-hidden="true" role="presentation"></li>
+                <li class="flex items-center">
+                    <a class="flex items-center text-white hover:text-blue-500" title="source document"
+                        href="{{ original_document }}">
+                        <svg class="w-6 h-6" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3 2.5C3 2.22386 3.22386 2 3.5 2H9.08579C9.21839 2 9.34557 2.05268 9.43934 2.14645L11.8536 4.56066C11.9473 4.65443 12 4.78161 12 4.91421V12.5C12 12.7761 11.7761 13 11.5 13H3.5C3.22386 13 3 12.7761 3 12.5V2.5ZM3.5 1C2.67157 1 2 1.67157 2 2.5V12.5C2 13.3284 2.67157 14 3.5 14H11.5C12.3284 14 13 13.3284 13 12.5V4.91421C13 4.51639 12.842 4.13486 12.5607 3.85355L10.1464 1.43934C9.86514 1.15804 9.48361 1 9.08579 1H3.5ZM4.5 4C4.22386 4 4 4.22386 4 4.5C4 4.77614 4.22386 5 4.5 5H7.5C7.77614 5 8 4.77614 8 4.5C8 4.22386 7.77614 4 7.5 4H4.5ZM4.5 7C4.22386 7 4 7.22386 4 7.5C4 7.77614 4.22386 8 4.5 8H10.5C10.7761 8 11 7.77614 11 7.5C11 7.22386 10.7761 7 10.5 7H4.5ZM4.5 10C4.22386 10 4 10.2239 4 10.5C4 10.7761 4.22386 11 4.5 11H10.5C10.7761 11 11 10.7761 11 10.5C11 10.2239 10.7761 10 10.5 10H4.5Z"
+                                fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </li>
+                <li class="w-[1px] bg-gray-100" aria-hidden="true" role="presentation"></li>
+                <li class="flex items-center">
+                    <a class="flex items-center text-white " href="#" title="generated at {{ generated_date }}">
+                        <svg class="w-6 h-6" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3.30902 1C2.93025 1 2.58398 1.214 2.41459 1.55279L1.05279 4.27639C1.01807 4.34582 1 4.42238 1 4.5V13C1 13.5523 1.44772 14 2 14H13C13.5523 14 14 13.5523 14 13V4.5C14 4.42238 13.9819 4.34582 13.9472 4.27639L12.5854 1.55281C12.416 1.21403 12.0698 1.00003 11.691 1.00003L7.5 1.00001L3.30902 1ZM3.30902 2L7 2.00001V4H2.30902L3.30902 2ZM8 4V2.00002L11.691 2.00003L12.691 4H8ZM7.5 5H13V13H2V5H7.5ZM5.5 7C5.22386 7 5 7.22386 5 7.5C5 7.77614 5.22386 8 5.5 8H9.5C9.77614 8 10 7.77614 10 7.5C10 7.22386 9.77614 7 9.5 7H5.5Z"
+                                fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
+            <ul id="headings">
+                {% for title in titles %}
+                <li class="mx-4">
+                    <a
+                        onclick="hamburger_visible(false)"
+                        href="#{{ title.get('id') }}"
+                        class="md:text-lg hover:bg-blue-200 py-1 px-4 rounded w-full block">
+                        {{ title.text.strip() }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <header id="header"
+            class="md:hidden sticky top-0 bg-gray-800 text-white flex justify-between items-center py-3">
+            <button
+                id="hamburgerButton"
+                class="z-10 py-1 px-4 bg-gray-900 rounded-md md:hidden text-2xl leading-8 ml-4">
+                ☰
+            </button>
+            <h1 class="text-2xl text-center p-0 text-white uppercase font-inter">{{ document_title }}</h1>
+            <p>&nbsp;</p>
+        </header>
+        <div id="mainContent"
+            class="{{ old_body_classes | join(' ') }} max-w-screen-lg overflow-x-hidden transition-opacity px-6 pt-16">
+            {{ old_body|safe }}
+        </div>
+    </main>
+</body>

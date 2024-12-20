@@ -1,2 +1,6 @@
 old
 node_modules
+style.css
+*.zip
+site
+venv
