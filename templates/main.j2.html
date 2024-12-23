@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 
+<html>
+
 <head>
     {{ old_head|safe }}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -8,15 +10,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="hamburger.js"></script>
     <link rel="stylesheet" href="style.css">
+    <title>{{ document_title }}</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 </head>
 
 <body class="">
     <main
-        class="bg-black md:justify-center md:bg-gradient-to-b from-cyan-50 to-gray-100 h-screen flex flex-col md:flex-row py-2">
+        class="bg-black md:justify-center md:bg-gradient-to-b from-cyan-50 to-gray-100 h-screen flex flex-col md:flex-row md:py-2">
         <nav
             id="hamburgerMenu"
-            class="fixed w-2/3 md:w-auto bg-white text-white transform -translate-x-full transition-transform duration-300 md:static md:translate-x-0 font-inter left-0 top-0 shadow-lg h-full z-30 flex-shrink-0 flex flex-col">
+            class="fixed w-2/3 md:w-auto bg-white text-white transform-gpu -translate-x-full transition-transform duration-300 md:static md:translate-x-0 font-inter left-0 top-0 shadow-lg h-full z-30 flex-shrink-0 flex flex-col">
             <ul class="flex justify-around items-center mt-0 bg-gray-800 border border-black/30 px-2 shadow-md h-12">
                 <li>
                     <a class="text-white hover:text-blue-500" data-title="generated with googlepress"
@@ -82,9 +85,9 @@
                 {% endfor %}
             </ul>
         </nav>
-        <div class="h-full overflow-y-auto">
+        <div class="h-full overflow-y-auto" id="mainContentWrapper">
             <header id="header"
-                class="sticky z-20 h-12 top-0 bg-gray-800 text-white flex justify-between items-center border-l border-white">
+                class="sticky z-20 h-12 top-0 bg-gray-800 text-white flex justify-between items-center md:border-l border-white">
                 <button
                     id="hamburgerButton"
                     class="z-10 py-1 px-4 bg-gray-900 rounded-md md:hidden text-2xl leading-8 ml-4">
@@ -107,3 +110,5 @@
         content: (reference) => reference.getAttribute('data-title'),
     })
 </script>
+
+</html>

@@ -8,13 +8,12 @@ function hamburger_visible(should_show) {
     // also, add a dark effect to the main div
     hamburgerMenu.classList.toggle('-translate-x-full', !should_show)
     main_content.classList.toggle('modal-content-bg', should_show)
-    header.classList.toggle('modal-content-bg', should_show)
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     hamburgerButton = document.getElementById('hamburgerButton')
     hamburgerMenu = document.getElementById('hamburgerMenu')
-    main_content = document.getElementById("mainContent")
+    main_content = document.getElementById("mainContentWrapper")
     header = document.getElementById("header")
 
     let startX = 0
@@ -53,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function highlightActiveNav() {
     const sections = document.querySelectorAll('.title')
     const navLinks = document.querySelectorAll('nav #headings a')
-    const main_content = document.querySelector("#mainContent")
+    const main_content = document.querySelector("#mainContentWrapper")
     const curr_scroll = main_content.scrollTop
 
     // if the heading is within 100 pixels, set it as active

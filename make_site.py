@@ -20,7 +20,7 @@ def get_url(url):
     return glob(f"{directory}/*.zip")[0]
 
 
-def render_template(soup, url_or_local_file, zip_filename):
+def render_template(soup, url_or_local_file, site_title):
     if "https://" not in url_or_local_file:
         url_or_local_file = os.path.abspath(url_or_local_file)
 
@@ -31,7 +31,7 @@ def render_template(soup, url_or_local_file, zip_filename):
         "old_body": str(soup.body.decode_contents()),
         "generated_date": datetime.now().isoformat(sep=" ", timespec="minutes"),
         "original_document": url_or_local_file,
-        "document_title": Path(zip_filename).stem
+        "document_title": site_title
     }
 
     with open("templates/main.j2.html") as f:
@@ -64,7 +64,7 @@ def massage_url(url):
     export_link = f"https://docs.google.com/document/u/0/export?format=zip&id={document_id}&includes_info_params=true&usp=sharing&cros_files=false"
     return export_link
 
-def main(url_or_local_file):
+def main(url_or_local_file, title):
     output_filename = "site/index.html"
 
     if os.path.exists(url_or_local_file):
@@ -90,7 +90,11 @@ def main(url_or_local_file):
 
     soup = BeautifulSoup(input_html, "html.parser")
     fix_tables(soup)
-    html = render_template(soup, url_or_local_file, zip_filename)
+
+    if title is None:
+        title = Path(zip_filename).stem
+
+    html = render_template(soup, url_or_local_file, title)
 
     with open(output_filename, "w", encoding="utf-8") as f:
         f.write(html)
@@ -101,5 +105,6 @@ def main(url_or_local_file):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("url_or_zipfile")
+    parser.add_argument("--title", default=None)
     args = parser.parse_args()
-    main(args.url_or_zipfile)
+    main(args.url_or_zipfile, args.title)
