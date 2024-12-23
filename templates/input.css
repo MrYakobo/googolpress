@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  scroll-margin-top: 80px;
+}
+
 .active {
   @apply bg-blue-300;
 }

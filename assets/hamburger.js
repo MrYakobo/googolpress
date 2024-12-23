@@ -1,41 +1,14 @@
 
-let tooltip
-
 let hamburgerButton
 let hamburgerMenu
 let main_content
 let header
-
-function tooltip_leave(event) {
-
-    function hide() {
-        tooltip.remove()
-        tooltip = null
-    }
-
-    if (event == null) {
-        if (tooltip != null)
-            hide()
-        return
-    }
-
-    const target = event.target.closest('a')
-    target.setAttribute('title', target.dataset.originalTitle)
-    target.removeAttribute('data-original-title')
-
-    // Remove tooltip on mouseout
-    if (tooltip && target && target.dataset.originalTitle) {
-        hide()
-    }
-}
-
 
 function hamburger_visible(should_show) {
     // also, add a dark effect to the main div
     hamburgerMenu.classList.toggle('-translate-x-full', !should_show)
     main_content.classList.toggle('modal-content-bg', should_show)
     header.classList.toggle('modal-content-bg', should_show)
-    tooltip_leave(null)
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -74,54 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         hamburger_visible(false)
-        tooltip_leave(event)
     })
-
-    document.addEventListener('mouseover', (event) => {
-        const target = event.target.closest('a')
-
-        // Check if the hovered element has a title attribute
-        if (target && target.hasAttribute('title')) {
-            const titleText = target.getAttribute('title')
-
-            // Create tooltip element
-            tooltip = document.createElement('div')
-            tooltip.className = 'tooltip'
-            tooltip.textContent = titleText
-
-            // Append tooltip to body
-            document.body.appendChild(tooltip)
-
-            // Remove the title attribute to prevent default browser tooltips
-            target.dataset.originalTitle = titleText
-            target.removeAttribute('title')
-
-            // Position the tooltip
-            const updateTooltipPosition = (e) => {
-                if (tooltip == null)
-                    return
-
-                const tooltipWidth = tooltip.offsetWidth
-                const tooltipHeight = tooltip.offsetHeight
-                const pageX = e.pageX
-                const pageY = e.pageY
-
-                tooltip.style.left = `${pageX - tooltipWidth / 2}px`
-                tooltip.style.top = `${pageY - tooltipHeight - 10}px`
-                tooltip.style.opacity = '1'
-            }
-
-            updateTooltipPosition(event)
-
-            // Update position on mousemove
-            target.addEventListener('mousemove', updateTooltipPosition)
-        }
-    })
-
-    document.addEventListener('mouseout', (event) => {
-        // tooltip_leave()
-    })
-
 })
 
 function highlightActiveNav() {
@@ -155,6 +81,6 @@ function highlightActiveNav() {
     if (currentSection !== null) {
         navLinks[currentSection].classList.add('active')
         // focus the correct link
-        navLinks[currentSection].focus()
+        navLinks[currentSection].scrollIntoView({ behavior: "smooth" })
     }
 }
