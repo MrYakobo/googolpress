@@ -1,20 +1,24 @@
 
 let hamburgerButton
 let hamburgerMenu
-let main_content
+let mainContentWrapper
+let mainContent
+let overlay
 let header
 
 function hamburger_visible(should_show) {
     // also, add a dark effect to the main div
     hamburgerMenu.classList.toggle('-translate-x-full', !should_show)
-    main_content.classList.toggle('modal-content-bg', should_show)
+    overlay.classList.toggle('hidden', !should_show)
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     hamburgerButton = document.getElementById('hamburgerButton')
     hamburgerMenu = document.getElementById('hamburgerMenu')
-    main_content = document.getElementById("mainContentWrapper")
+    mainContentWrapper = document.getElementById("mainContentWrapper")
+    mainContent = document.getElementById("mainContent")
     header = document.getElementById("header")
+    overlay = document.getElementById("overlay")
 
     let startX = 0
 
@@ -30,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    main_content.addEventListener('scroll', highlightActiveNav, { passive: true })
+    mainContentWrapper.addEventListener('scroll', highlightActiveNav, { passive: true })
 
     document.addEventListener('click', event => {
         if (event.target == hamburgerButton) {

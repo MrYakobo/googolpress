@@ -11,7 +11,6 @@
     <script src="hamburger.js"></script>
     <link rel="stylesheet" href="style.css">
     <title>{{ document_title }}</title>
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 </head>
 
 <body class="">
@@ -22,6 +21,29 @@
             class="fixed w-2/3 md:w-auto bg-white text-white transform-gpu -translate-x-full transition-transform duration-300 md:static md:translate-x-0 font-inter left-0 top-0 shadow-lg h-full z-30 flex-shrink-0 flex flex-col">
             <ul class="flex justify-around items-center mt-0 bg-gray-800 border border-black/30 px-2 shadow-md h-12">
                 <li>
+                    <span class="flex items-center text-white " data-title="generated at {{ generated_date }}">
+                        <svg class="w-6 h-6" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3.30902 1C2.93025 1 2.58398 1.214 2.41459 1.55279L1.05279 4.27639C1.01807 4.34582 1 4.42238 1 4.5V13C1 13.5523 1.44772 14 2 14H13C13.5523 14 14 13.5523 14 13V4.5C14 4.42238 13.9819 4.34582 13.9472 4.27639L12.5854 1.55281C12.416 1.21403 12.0698 1.00003 11.691 1.00003L7.5 1.00001L3.30902 1ZM3.30902 2L7 2.00001V4H2.30902L3.30902 2ZM8 4V2.00002L11.691 2.00003L12.691 4H8ZM7.5 5H13V13H2V5H7.5ZM5.5 7C5.22386 7 5 7.22386 5 7.5C5 7.77614 5.22386 8 5.5 8H9.5C9.77614 8 10 7.77614 10 7.5C10 7.22386 9.77614 7 9.5 7H5.5Z"
+                                fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+
+                </li>
+                <li class="w-[1px] h-full bg-gray-100" aria-hidden="true" role="presentation"></li>
+                <li class="flex items-center">
+                    <a class="flex items-center text-white hover:text-blue-500" data-title="view source document"
+                        href="{{ original_document }}">
+                        <svg class="w-6 h-6" viewBox="0 0 15 15" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3 2.5C3 2.22386 3.22386 2 3.5 2H9.08579C9.21839 2 9.34557 2.05268 9.43934 2.14645L11.8536 4.56066C11.9473 4.65443 12 4.78161 12 4.91421V12.5C12 12.7761 11.7761 13 11.5 13H3.5C3.22386 13 3 12.7761 3 12.5V2.5ZM3.5 1C2.67157 1 2 1.67157 2 2.5V12.5C2 13.3284 2.67157 14 3.5 14H11.5C12.3284 14 13 13.3284 13 12.5V4.91421C13 4.51639 12.842 4.13486 12.5607 3.85355L10.1464 1.43934C9.86514 1.15804 9.48361 1 9.08579 1H3.5ZM4.5 4C4.22386 4 4 4.22386 4 4.5C4 4.77614 4.22386 5 4.5 5H7.5C7.77614 5 8 4.77614 8 4.5C8 4.22386 7.77614 4 7.5 4H4.5ZM4.5 7C4.22386 7 4 7.22386 4 7.5C4 7.77614 4.22386 8 4.5 8H10.5C10.7761 8 11 7.77614 11 7.5C11 7.22386 10.7761 7 10.5 7H4.5ZM4.5 10C4.22386 10 4 10.2239 4 10.5C4 10.7761 4.22386 11 4.5 11H10.5C10.7761 11 11 10.7761 11 10.5C11 10.2239 10.7761 10 10.5 10H4.5Z"
+                                fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </li>
+                <li class="w-[1px] h-full bg-gray-100" aria-hidden="true" role="presentation"></li>
+                <li class="flex items-center">
                     <a class="text-white hover:text-blue-500" data-title="generated with googlepress"
                         href="https://github.com/MrYakobo/googlepress">
                         <svg class="w-16" width="112" height="42" viewBox="0 0 112 42" fill="none"
@@ -48,29 +70,6 @@
                         </svg>
                     </a>
                 </li>
-                <li class="w-[1px] h-full bg-gray-100" aria-hidden="true" role="presentation"></li>
-                <li class="flex items-center">
-                    <a class="flex items-center text-white hover:text-blue-500" data-title="view source document"
-                        href="{{ original_document }}">
-                        <svg class="w-6 h-6" viewBox="0 0 15 15" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M3 2.5C3 2.22386 3.22386 2 3.5 2H9.08579C9.21839 2 9.34557 2.05268 9.43934 2.14645L11.8536 4.56066C11.9473 4.65443 12 4.78161 12 4.91421V12.5C12 12.7761 11.7761 13 11.5 13H3.5C3.22386 13 3 12.7761 3 12.5V2.5ZM3.5 1C2.67157 1 2 1.67157 2 2.5V12.5C2 13.3284 2.67157 14 3.5 14H11.5C12.3284 14 13 13.3284 13 12.5V4.91421C13 4.51639 12.842 4.13486 12.5607 3.85355L10.1464 1.43934C9.86514 1.15804 9.48361 1 9.08579 1H3.5ZM4.5 4C4.22386 4 4 4.22386 4 4.5C4 4.77614 4.22386 5 4.5 5H7.5C7.77614 5 8 4.77614 8 4.5C8 4.22386 7.77614 4 7.5 4H4.5ZM4.5 7C4.22386 7 4 7.22386 4 7.5C4 7.77614 4.22386 8 4.5 8H10.5C10.7761 8 11 7.77614 11 7.5C11 7.22386 10.7761 7 10.5 7H4.5ZM4.5 10C4.22386 10 4 10.2239 4 10.5C4 10.7761 4.22386 11 4.5 11H10.5C10.7761 11 11 10.7761 11 10.5C11 10.2239 10.7761 10 10.5 10H4.5Z"
-                                fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
-                </li>
-                <li class="w-[1px] h-full bg-gray-100" aria-hidden="true" role="presentation"></li>
-                <li class="flex items-center">
-                    <span class="flex items-center text-white " data-title="generated at {{ generated_date }}">
-                        <svg class="w-6 h-6" viewBox="0 0 15 15" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M3.30902 1C2.93025 1 2.58398 1.214 2.41459 1.55279L1.05279 4.27639C1.01807 4.34582 1 4.42238 1 4.5V13C1 13.5523 1.44772 14 2 14H13C13.5523 14 14 13.5523 14 13V4.5C14 4.42238 13.9819 4.34582 13.9472 4.27639L12.5854 1.55281C12.416 1.21403 12.0698 1.00003 11.691 1.00003L7.5 1.00001L3.30902 1ZM3.30902 2L7 2.00001V4H2.30902L3.30902 2ZM8 4V2.00002L11.691 2.00003L12.691 4H8ZM7.5 5H13V13H2V5H7.5ZM5.5 7C5.22386 7 5 7.22386 5 7.5C5 7.77614 5.22386 8 5.5 8H9.5C9.77614 8 10 7.77614 10 7.5C10 7.22386 9.77614 7 9.5 7H5.5Z"
-                                fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path>
-                        </svg>
-                        </a>
-                </li>
             </ul>
             <ul id="headings" class="overflow-y-scroll pt-2">
                 {% for title in titles %}
@@ -85,9 +84,10 @@
                 {% endfor %}
             </ul>
         </nav>
+        <div id="overlay" class="fixed left-0 top-0 w-screen h-screen z-20 bg-black/50 hidden"></div>
         <div class="h-full overflow-y-auto" id="mainContentWrapper">
             <header id="header"
-                class="sticky z-20 h-12 top-0 bg-gray-800 text-white flex justify-between items-center md:border-l border-white">
+                class="sticky z-10 h-12 top-0 bg-gray-800 text-white flex justify-between items-center md:border-l border-white">
                 <button
                     id="hamburgerButton"
                     class="z-10 py-1 px-4 bg-gray-900 rounded-md md:hidden text-2xl leading-8 ml-4">
