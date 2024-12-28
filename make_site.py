@@ -61,18 +61,21 @@ def massage_url(url):
     pattern = r"(?<=/d/)([a-zA-Z0-9-_]+)"
     document_id = re.search(pattern, url).group(1)
 
+    docs_link = f"https://docs.google.com/document/d/{document_id}/edit?usp=drive_link"
     export_link = f"https://docs.google.com/document/u/0/export?format=zip&id={document_id}&includes_info_params=true&usp=sharing&cros_files=false"
-    return export_link
+
+    return (docs_link, export_link)
 
 def main(url_or_local_file, title):
     output_filename = "site/index.html"
 
     if os.path.exists(url_or_local_file):
         zip_filename = url_or_local_file
+        docs_link = zip_filename
     else:
         # try to fetch the url
         if "export" not in url_or_local_file:
-            url_or_local_file = massage_url(url_or_local_file)
+            docs_link, url_or_local_file = massage_url(url_or_local_file)
 
         zip_filename = get_url(url_or_local_file)
 
@@ -94,7 +97,7 @@ def main(url_or_local_file, title):
     if title is None:
         title = Path(zip_filename).stem
 
-    html = render_template(soup, url_or_local_file, title)
+    html = render_template(soup, docs_link, title)
 
     with open(output_filename, "w", encoding="utf-8") as f:
         f.write(html)
