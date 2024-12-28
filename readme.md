@@ -1,6 +1,6 @@
-# googlepress: transform a google doc into a static site
+# googolpress: transform a google doc into a static site
 
-![googlepress logo](./assets/logo.svg)
+![googolpress logo](./assets/logo.svg)
 
 usecase: Emerald Legacy documentation is in a massive google doc, that is slowed down by just visiting the document. it introduces unneccessary friction. this tool can run on a cron job and update a live website from a Google Doc. be warned, google seems to throttle the export api sometimes
 
